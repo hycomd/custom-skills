@@ -1,0 +1,4 @@
+interface:
+  display_name: "Beautiful SVG Whiteboard"
+  short_description: "Create polished editable SVG whiteboards"
+  default_prompt: "Use $beautiful-svg-whiteboard to turn this content into a polished editable SVG whiteboard."
