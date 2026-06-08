@@ -5,8 +5,8 @@ medium constraints for a polished, editable standalone SVG.
 
 ## Hard Rules
 
-- **Final output is SVG.** Create a `.svg` file as the deliverable. A PNG preview is useful for
-  verification, but it is not the primary artifact.
+- **Final output is SVG only.** Create a `.svg` file as the sole deliverable. Do not generate
+  PNG, JPEG, or any raster image format.
 - **Deliver a local editable artifact.** Return the SVG file path. The user edits the SVG later in
   Inkscape or any SVG editor if more changes are needed.
 - **Set a Chinese-capable font stack.** Put `font-family` on the root `<svg>` so Chinese text opens
@@ -57,19 +57,18 @@ medium constraints for a polished, editable standalone SVG.
 - **Design for readable editability.** Keep text at practical sizes, use generous padding, align to
   a visible grid, and leave enough whitespace around dense groups.
 
-## Rendering And Inspection
+## Self-Check
 
-1. Write the SVG to a clear local filename, usually near any source materials or in the workspace.
-2. Render a preview when tooling is available. Good options include Inkscape, ImageMagick, `rsvg-convert`,
-   browser screenshots, or any existing project renderer. Do not install tools unless necessary.
-3. Open or inspect the preview and correct the common failures:
-   - text overflowing boxes or canvas edges
-   - cramped top or side padding
-   - accidental overlaps between labels, connectors, and shapes
-   - clipped content at right or bottom edges
-   - weak contrast, especially small text on saturated fills
-   - inconsistent spacing or alignment
-4. Iterate SVG -> preview -> inspect -> edit until the artifact looks deliberate.
+Before delivering the SVG, review it mentally for common failures:
+
+- text overflowing boxes or canvas edges
+- cramped top or side padding
+- accidental overlaps between labels, connectors, and shapes
+- clipped content at right or bottom edges
+- weak contrast, especially small text on saturated fills
+- inconsistent spacing or alignment
+
+If you spot any issue, fix the SVG and re-check.
 
 ## Composition Guidance
 
@@ -86,5 +85,5 @@ medium constraints for a polished, editable standalone SVG.
 
 ## Delivery
 
-Return the SVG path and any preview image path. Mention that the SVG is the final editable artifact
-and can be adjusted by the user in Inkscape or another SVG editor.
+Return the SVG path. Mention that the SVG is the final editable artifact and can be adjusted by the
+user in Inkscape or another SVG editor.

@@ -20,7 +20,7 @@ colors:
 # ── TEXT COLOR ───────────────────────────────────────────────
 text-rules:
   rule: "Text is ink on the mint page and on white cards. On a blue or green fill, use large bold white."
-  note: "Large bold white text on the cobalt blue reads well on the live board. The image export renders text color unreliably, so judge color via --output_as raw or the live board, not the exported PNG."
+  note: "Large bold white text on the cobalt blue reads well."
 
 # ── STROKE & CORNERS ─────────────────────────────────────────
 stroke:

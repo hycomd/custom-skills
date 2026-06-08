@@ -6,8 +6,7 @@ description: Create polished, editable SVG whiteboards, infographics, diagrams, 
 # Beautiful SVG Whiteboard
 
 Create a finished **standalone SVG** as the final artifact. Use the bundled style catalogue for
-palette and mood, compose the layout yourself, render and inspect the SVG, then deliver the SVG path
-and any generated preview image.
+palette and mood, compose the layout yourself, then deliver the SVG path.
 
 ## Workflow
 
@@ -15,8 +14,8 @@ and any generated preview image.
    such as system map, timeline, comparison, funnel, stages, poster, or explanatory board. If the
    request is unclear, ask one short question before building.
 2. **Choose the vibe.** If the user names a style, use it. Otherwise infer the desired mood,
-   formality, and colour direction; when unsure, pick a versatile balanced style and say which one
-   you chose in one line.
+   formality, and colour direction; when unsure, default to **Checker Bloom** (playful, clean,
+   mint-and-cobalt) and say which one you chose in one line.
 3. **Read the resources.** Always read [`RULES.md`](RULES.md), then use [`CATALOG.md`](CATALOG.md)
    and the chosen [`templates/<slug>/design.md`](templates/) file.
 4. **Build the SVG.**
@@ -28,11 +27,8 @@ and any generated preview image.
      `<svg ... font-family="Source Han Sans SC, Noto Sans SC, Microsoft YaHei, sans-serif">`.
    - Put only the finished content on the canvas. Do not echo the user's prompt, source notes,
      chosen style name, file paths, tool names, or process metadata into the visual.
-5. **Render and inspect.** Produce a PNG preview when possible, open or inspect it, and fix text
-   overflow, poor padding, accidental overlaps, clipping, weak contrast, or awkward spacing. Iterate
-   until the artifact is clean.
-6. **Deliver.** Return the SVG file path and, if created, the preview image path. Mention that the
-   user can edit the SVG in Inkscape or another SVG editor and can ask for a style swap.
+5. **Deliver.** Return the SVG file path. Mention that the user can edit the SVG in Inkscape or
+   another SVG editor and can ask for a style swap.
 
 ## Files
 

@@ -49,7 +49,7 @@ restrained / refined / institutional.
    most general work sits comfortably in **Balanced**.
 2. **Formality second.** Within the level, match how formal it should read.
 3. **Vibe third.** Narrow by the user's mood or colour preference.
-4. **When unsure, default to Soft Editorial** for a gentle general-purpose board, or **Mint Brut**
-   when the user wants something friendlier and more energetic.
+4. **When unsure, default to Checker Bloom** — its playful, clean mint-and-cobalt palette works
+   well for most general-purpose boards.
 5. Always offer to switch afterwards. Swapping style means re-rendering the same SVG content in a
    different retained template's palette.
