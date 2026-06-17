@@ -168,7 +168,7 @@ The placeholder syntax is: `__IMG__:{path-or-url}__`
   h1.display { font-size: 64px; line-height: 68px; letter-spacing: -0.03em; margin: 0; font-weight: 900; }
   h2 { font-size: 32px; line-height: 38px; letter-spacing: -0.02em; margin: 0 0 16px 0; font-weight: 800; }
   h3 { font-size: 20px; line-height: 26px; letter-spacing: -0.01em; margin: 0 0 10px 0; font-weight: 700; }
-  p { font-size: 16px; line-height: 26px; margin: 0 0 16px 0; max-width: 72ch; }
+  p { font-size: 16px; line-height: 26px; margin: 0 0 16px 0; }
   ul, ol { padding-left: 24px; }
   li { font-size: 16px; line-height: 26px; margin-bottom: 8px; }
   code { font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 14px; background: var(--panel); padding: 2px 6px; border-radius: 3px; }
