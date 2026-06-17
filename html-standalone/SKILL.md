@@ -1,6 +1,6 @@
 ---
 name: html-standalone
-version: "3.0.0"
+version: "3.1.0"
 description: "Convert Markdown (with images), JSON, plain text, or a URL into a single fully self-contained HTML page. All local and remote images are base64-encoded and embedded inline — zero external dependencies, portable anywhere. Use this skill whenever the user wants a standalone HTML file, a portable document with embedded images, or mentions 'self-contained HTML', 'offline HTML', 'embed images in HTML', or wants to share a complete HTML document with no missing assets."
 argument-hint: 'html-standalone <file-path> | html-standalone <url> | html-standalone (then paste)'
 allowed-tools: Bash, Read, Write, WebFetch, Glob, Grep
@@ -66,7 +66,7 @@ Scan topic, pick ONE mood:
 
 ### Step 4 — Generate HTML with image placeholders
 
-Write the HTML to `OUT_PATH` using the template below. For images, use **placeholders** — do NOT try to base64-encode anything yourself.
+Read the bundled `template.html` (in the same directory as this `SKILL.md`) — it contains the full page layout and CSS. Fill its placeholders per the rules below. For images, use **placeholders** — do NOT try to base64-encode anything yourself.
 
 **Image placeholder format:**
 
@@ -88,184 +88,22 @@ The placeholder syntax is: `__IMG__:{path-or-url}__`
 
 **Why placeholders?** The bundled `embed-images.py` script will read the HTML, find all `__IMG__:...__` tokens, base64-encode each image, and replace them with `data:` URIs. This keeps the HTML generation clean and avoids handling binary data in context.
 
-### HTML Template
+**Template placeholders** (the slots in `template.html` to fill):
 
-```html
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>{TITLE} · html-standalone</title>
-<meta name="description" content="{DESCRIPTION}" />
-<meta name="generator" content="html-standalone" />
-<style>
-  :root {
-    --ground: {GROUND};
-    --ink: {INK};
-    --accent: {ACCENT};
-    --mute: {MUTE};
-    --hair: {HAIR};
-    --panel: {PANEL};
-    --sidebar-w: 280px;
-  }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; background: var(--ground); color: var(--ink); }
-  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+*Color variables* — in the template's `:root`, replace these with the hex values from the mood chosen in Step 3:
+`{GROUND}` · `{INK}` · `{ACCENT}` · `{MUTE}` · `{HAIR}` · `{PANEL}`
 
-  /* Layout */
-  .layout { display: flex; min-height: 100vh; }
+*Content slots:*
+- `{TITLE}` / `{DESCRIPTION}` — page `<title>` and meta description (derive from the headline)
+- `{TOC_TITLE}` — "目录大纲" for Chinese content, "Contents" for English
+- `{TOC_ITEMS}` — generated per the "Sidebar & TOC" rules below
+- `{EYEBROW}` — short topic label
+- `{HEADLINE}` — the first `# H1` only
+- `{THESIS_BLOCK}` — an opening `<div class="thesis">…</div>` if there's a lead statement; otherwise remove the line
+- `{BODY_SECTIONS}` — the rendered `## H2` / `### H3` sections (see Markdown rules below)
+- `{DATE}` / `{SOURCE_HINT}` — footer date and source attribution
 
-  /* Sidebar TOC */
-  .sidebar {
-    width: var(--sidebar-w);
-    flex-shrink: 0;
-    position: fixed;
-    top: 0; left: 0; bottom: 0;
-    background: #FAFAFA;
-    border-right: 1px solid var(--hair);
-    overflow-y: auto;
-    padding: 32px 0;
-    z-index: 10;
-  }
-  .sidebar-header {
-    padding: 0 24px 20px 24px;
-    font-weight: 800;
-    font-size: 13px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent);
-    border-bottom: 1px solid var(--hair);
-    margin-bottom: 12px;
-  }
-  .toc { list-style: none; padding: 0; margin: 0; }
-  .toc li { margin: 0; }
-  .toc a {
-    display: block;
-    padding: 8px 24px;
-    font-size: 13.5px;
-    line-height: 1.5;
-    color: var(--ink);
-    text-decoration: none;
-    border-left: 3px solid transparent;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
-  }
-  .toc a:hover { background: var(--panel); color: var(--accent); }
-  .toc a.active { border-left-color: var(--accent); background: #EEF2FF; color: var(--accent); font-weight: 600; }
-  .toc .toc-h2 { font-weight: 600; }
-  .toc .toc-h3 { padding-left: 40px; font-weight: 400; color: var(--mute); font-size: 13px; }
-  .toc .toc-h3:hover { color: var(--accent); }
-
-  /* Main content */
-  .main-area { margin-left: var(--sidebar-w); flex: 1; min-width: 0; }
-
-  /* Typography */
-  a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
-  a:hover { text-decoration-thickness: 2px; }
-  .wrap { max-width: 900px; margin: 0 auto; padding: 64px 56px 80px 56px; display: flex; flex-direction: column; gap: 48px; }
-  .eyebrow { display: flex; align-items: center; gap: 12px; font-weight: 500; font-size: 11px; letter-spacing: 0.2em; color: var(--mute); text-transform: uppercase; }
-  .eyebrow .dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; display: inline-block; }
-  h1.display { font-size: 64px; line-height: 68px; letter-spacing: -0.03em; margin: 0; font-weight: 900; }
-  h2 { font-size: 32px; line-height: 38px; letter-spacing: -0.02em; margin: 0 0 16px 0; font-weight: 800; }
-  h3 { font-size: 20px; line-height: 26px; letter-spacing: -0.01em; margin: 0 0 10px 0; font-weight: 700; }
-  p { font-size: 16px; line-height: 26px; margin: 0 0 16px 0; }
-  ul, ol { padding-left: 24px; }
-  li { font-size: 16px; line-height: 26px; margin-bottom: 8px; }
-  code { font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 14px; background: var(--panel); padding: 2px 6px; border-radius: 3px; }
-  pre { background: var(--panel); padding: 16px 20px; overflow-x: auto; font-size: 13px; line-height: 20px; font-family: 'Cascadia Code', 'Consolas', monospace; border-radius: 4px; margin: 0 0 16px 0; }
-  blockquote { border-left: 4px solid var(--accent); padding: 4px 20px; margin: 16px 0; color: var(--mute); font-style: normal; }
-  .thesis { display: flex; gap: 0; }
-  .thesis .strip { width: 6px; background: var(--accent); flex-shrink: 0; border-radius: 3px; }
-  .thesis .body { padding: 20px 28px; flex: 1; }
-  .section { padding-top: 28px; border-top: 1px solid var(--hair); }
-  .card { padding: 20px 0; border-top: 1px solid var(--hair); display: flex; flex-direction: column; gap: 10px; }
-  .meta-row { display: flex; gap: 24px; align-items: baseline; flex-wrap: wrap; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 13px; color: var(--mute); }
-  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-  table { border-collapse: collapse; width: 100%; margin: 12px 0 20px 0; font-size: 14px; }
-  th { background: var(--panel); font-weight: 700; text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--ink); }
-  td { padding: 10px 14px; border-bottom: 1px solid var(--hair); vertical-align: top; }
-  tr:hover td { background: #FAFAFA; }
-  .img-container { margin: 24px 0; }
-  .img-container img { max-width: 100%; height: auto; border-radius: 4px; border: 1px solid var(--hair); }
-  .img-container figcaption { font-size: 13px; color: var(--mute); margin-top: 8px; font-style: italic; }
-  footer { padding-top: 32px; border-top: 2px solid var(--ink); font-size: 13px; color: var(--mute); display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
-
-  /* Scroll offset for anchor links */
-  [id] { scroll-margin-top: 24px; }
-
-  /* Mobile */
-  @media (max-width: 900px) {
-    .sidebar { display: none; }
-    .main-area { margin-left: 0; }
-    .wrap { padding: 40px 24px; gap: 32px; }
-    h1.display { font-size: 40px; line-height: 44px; }
-    .grid { grid-template-columns: 1fr; }
-  }
-</style>
-</head>
-<body>
-
-<div class="layout">
-  <!-- Sidebar TOC -->
-  <nav class="sidebar" id="sidebar">
-    <div class="sidebar-header">{TOC_TITLE}</div>
-    <ul class="toc" id="toc">
-      {TOC_ITEMS}
-    </ul>
-  </nav>
-
-  <!-- Main Content -->
-  <div class="main-area">
-    <main class="wrap">
-
-      <div class="eyebrow">
-        <span class="dot"></span>
-        <span>{EYEBROW}</span>
-        <span style="margin-left:auto;color:var(--mute);">Standalone</span>
-      </div>
-
-      <h1 class="display">{HEADLINE}</h1>
-
-      {THESIS_BLOCK}
-
-      {BODY_SECTIONS}
-
-      <footer>
-        <span>Generated by html-standalone · {DATE}</span>
-        <span>{SOURCE_HINT}</span>
-      </footer>
-
-    </main>
-  </div>
-</div>
-
-<script>
-// TOC active state on scroll
-(function() {
-  const tocLinks = document.querySelectorAll('.toc a');
-  const sections = [];
-  tocLinks.forEach(function(link) {
-    const id = link.getAttribute('href').slice(1);
-    const el = document.getElementById(id);
-    if (el) sections.push({ el: el, link: link });
-  });
-  function update() {
-    const scrollY = window.scrollY + 80;
-    let current = sections[0];
-    for (let i = 0; i < sections.length; i++) {
-      if (sections[i].el.offsetTop <= scrollY) current = sections[i];
-    }
-    tocLinks.forEach(function(l) { l.classList.remove('active'); });
-    if (current) current.link.classList.add('active');
-  }
-  window.addEventListener('scroll', update, { passive: true });
-  update();
-})();
-</script>
-
-</body>
-</html>
-```
+Leave image `__IMG__:path__` placeholders exactly as written — Phase 2 turns them into base64 data URIs.
 
 ### Rendering rules
 
@@ -293,18 +131,20 @@ The placeholder syntax is: `__IMG__:{path-or-url}__`
 
 **Fonts:** System fonts only (no Google Fonts CDN). True offline portability.
 
-Write the HTML via the Write tool.
+Write the filled HTML to `OUT_PATH` via the Write tool.
 
 ## Phase 2: Embed images
 
-After writing the HTML, run the bundled script to replace all image placeholders with base64 data URIs:
+Run the bundled `scripts/embed-images.py` to replace every image placeholder with a base64 data URI. The script sits in this skill's own directory (next to `SKILL.md`).
+
+Call it by **absolute path** so it runs from any working directory on any OS — use the folder you read this file from:
 
 ```bash
 python3 "<SKILL_DIR>/scripts/embed-images.py" "$OUT_PATH" --content-dir "$CONTENT_DIR"
 ```
 
-Where `<SKILL_DIR>` is the directory containing this skill file:
-- On this system: `C:/Users/hongsa/.claude/skills/html-standalone`
+- `<SKILL_DIR>` — absolute path of this skill's directory (the one containing `SKILL.md`/`template.html`). Derive it at runtime from the path you read; never hardcode it.
+- If `python3` is not on PATH (common on Windows), use `python` instead.
 
 The script will:
 1. Scan the HTML for all `__IMG__:...__` placeholders
