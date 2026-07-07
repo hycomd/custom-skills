@@ -78,8 +78,10 @@
   p { font-size: 16px; line-height: 26px; margin: 0 0 16px 0; }
   ul, ol { padding-left: 24px; }
   li { font-size: 16px; line-height: 26px; margin-bottom: 8px; }
-  code { font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 14px; background: var(--panel); padding: 2px 6px; border-radius: 3px; }
-  pre { background: var(--panel); padding: 16px 20px; overflow-x: auto; font-size: 13px; line-height: 20px; font-family: 'Cascadia Code', 'Consolas', monospace; border-radius: 4px; margin: 0 0 16px 0; }
+  code { font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 14px; }
+  :not(pre) > code { background: var(--panel); padding: 2px 6px; border-radius: 3px; }
+  pre { background: var(--panel); padding: 16px 20px; overflow-x: auto; font-size: 13px; line-height: 20px; font-family: 'Cascadia Code', 'Consolas', monospace; border-radius: 4px; margin: 0 0 16px 0; white-space: pre; }
+  pre code { display: block; padding: 0; background: transparent; border-radius: 0; font-size: inherit; line-height: inherit; white-space: inherit; }
   blockquote { border-left: 4px solid var(--accent); padding: 4px 20px; margin: 16px 0; color: var(--mute); font-style: normal; }
   .thesis { display: flex; gap: 0; }
   .thesis .strip { width: 6px; background: var(--accent); flex-shrink: 0; border-radius: 3px; }
